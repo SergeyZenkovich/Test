@@ -1,0 +1,193 @@
+fileFormatVersion: 2
+guid: 93ec209278564fd41b162db6a49aacff
+timeCreated: 1591830809
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Pistol Attack_0
+    21300002: Pistol Attack_1
+    21300004: Pistol Attack_2
+    21300006: Pistol Attack_3
+    21300008: Pistol Attack_4
+  externalObjects: {}
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 1
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 4
+  maxTextureSize: 128
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 0
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 16
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Pistol Attack_0
+      rect:
+        serializedVersion: 2
+        x: 2.07612
+        y: 36.01291
+        width: 28.87256
+        height: 22.97417
+      alignment: 9
+      pivot: {x: 0.06663349, y: 0.4354057}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -4.512402, y: -11.5}
+        - {x: -14.5124, y: -4.499999}
+        - {x: -14.5124, y: 0.500001}
+        - {x: -4.512402, y: 8.500001}
+        - {x: 2.487598, y: 11.5}
+        - {x: 4.487598, y: 11.5}
+        - {x: 14.4876, y: 1.500001}
+        - {x: 14.4876, y: -4.499999}
+        - {x: 7.487598, y: -11.5}
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Pistol Attack_1
+      rect:
+        serializedVersion: 2
+        x: 34.07612
+        y: 38.07612
+        width: 25.89038
+        height: 20.91097
+      alignment: 9
+      pivot: {x: 0.07430875, y: 0.3796994}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0.9786921, y: -10.5316}
+        - {x: -13.02131, y: -5.531601}
+        - {x: -13.02131, y: 4.468399}
+        - {x: -1.021308, y: 10.4684}
+        - {x: 8.978692, y: 10.4684}
+        - {x: 12.97869, y: 0.468399}
+        - {x: 12.97869, y: -0.531601}
+        - {x: 9.978692, y: -8.531601}
+        - {x: 6.978692, y: -10.5316}
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Pistol Attack_2
+      rect:
+        serializedVersion: 2
+        x: 66.07612
+        y: 40.07612
+        width: 27.84776
+        height: 17.84776
+      alignment: 9
+      pivot: {x: 0.06908569, y: 0.3328082}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 2.000002, y: -8.999997}
+        - {x: -14, y: -5.999997}
+        - {x: -14, y: 5.000003}
+        - {x: -2.999998, y: 9.000003}
+        - {x: 12, y: 9.000003}
+        - {x: 14, y: 3.000003}
+        - {x: 14, y: -3.999997}
+        - {x: 8.000002, y: -8.999997}
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Pistol Attack_3
+      rect:
+        serializedVersion: 2
+        x: 98.07612
+        y: 41.07612
+        width: 24.88759
+        height: 14.84776
+      alignment: 9
+      pivot: {x: 0.07730284, y: 0.3327021}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -7.519916, y: -7.499997}
+        - {x: -12.51992, y: -5.499997}
+        - {x: -12.51992, y: 0.5000029}
+        - {x: -11.51992, y: 1.500003}
+        - {x: -1.519916, y: 7.500003}
+        - {x: 9.480084, y: 7.500003}
+        - {x: 12.48008, y: 5.500003}
+        - {x: 12.48008, y: -6.499997}
+        - {x: 11.48008, y: -7.499997}
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Pistol Attack_4
+      rect:
+        serializedVersion: 2
+        x: 2.07612
+        y: 11.07612
+        width: 20.84776
+        height: 7.847759
+      alignment: 9
+      pivot: {x: 0.09228233, y: 0.3746139}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 10.5, y: -4}
+        - {x: -10.5, y: -4}
+        - {x: -10.5, y: 1}
+        - {x: -2.5, y: 4}
+        - {x: 8.5, y: 4}
+        - {x: 10.5, y: 3}
+      physicsShape: []
+      tessellationDetail: 0
+    outline: []
+    physicsShape: []
+  spritePackingTag:
+  userData:
+  assetBundleName:
+  assetBundleVariant:
