@@ -19,7 +19,7 @@
         physics: {
           default: 'arcade',
           arcade: {
-            gravity: { y: 450 },
+            gravity: { y: 0 },
             debug: false,
           },
         },
@@ -32,8 +32,12 @@
       var player;
       var legs;
       var gun;
+      var input;
+      var bullet;
+      var mouse;
       var gunBack;
       var stars;
+      var control = false;
       var bombs;
       var platforms;
       var cursors;
@@ -50,6 +54,7 @@
         this.load.image('lstar', 'assets/lstar.png');
         this.load.image('bomb', 'assets/bomb.png');
         this.load.image('gun', 'assets/handwithgun.png');
+        this.load.image('bullet', 'assets/bullet.png');
         this.load.image('gunback', 'assets/handswithgunback.png');
         this.load.spritesheet('dude', 'assets/spr.png', {
           frameWidth: 32,
@@ -62,6 +67,8 @@
       }
 
       function create() {
+        input = this.input;
+        mouse = this.input.mousePointer;
         this.add.image(400, 300, 'sky');
         platforms = this.physics.add.staticGroup();
 
@@ -78,9 +85,9 @@
 
         player = this.add.sprite(0, 0, 'dude');
         legs = this.add.sprite(0, 0, 'dudeLegs');
-        gun = this.add.image(4, 1, 'gun');
+        gun = this.add.image(0, 1, 'gun').setOrigin(0, 0.5);
 
-        person = this.add.container(150, 30, [legs, player, gun]);
+        person = this.add.container(150, 520, [legs, player, gun]);
         person.setSize(40, 32);
         this.physics.world.enable(person);
 
@@ -158,24 +165,46 @@
       }
 
       function update() {
+        let angle = Phaser.Math.Angle.Between(
+          person.list[2].x,
+          person.list[2].y,
+          input.x,
+          input.y
+        );
+        if (mouse.isDown && control == false) {
+          console.log('fire!');
+          //for fire again
+
+          bullet = this.physics.add.image(0, 0, 'bullet');
+          person.add(bullet);
+
+          //move to mouse position
+          console.log([person.list, input.x, input.y]);
+          this.physics.moveTo(person.list[3], input.x, input.y, 500);
+          // control = true;
+          // console.log(control);
+        }
+        // if (mouse.isUp) {
+        //   console.log(control);
+        //   control = false;
+        // }
+
         if (gameOver) {
           return;
         }
+        person.list[2].setRotation(angle - Math.PI / 6);
+        gunBack = this.add.sprite(0, 1, 'gunback').setOrigin(1, 0.5);
 
         if (cursors.left.isDown) {
           person.body.setVelocityX(-50);
-
-          gunBack = this.add.image(-2, 1, 'gunback');
-          console.log(person.list[2]);
           person.replace(gun, gunBack);
-
+          person.list[2].setRotation(-angle + Math.PI / 6);
           player.anims.play('left', true);
           legs.anims.play('leftl', true);
         } else if (cursors.right.isDown) {
           person.body.setVelocityX(50);
-          gun = this.add.image(4, 2, 'gun');
-          person.replace(gunBack, gun);
-          console.log(person[2]);
+          // gun = this.add.image(4, 2, 'gun');
+          person.replace(person.list[2], gun);
 
           player.anims.play('right', true);
           legs.anims.play('rightl', true);
