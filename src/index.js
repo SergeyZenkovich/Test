@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import { Engine, Render, World, Bodies, Body, Events } from 'matter-js';
+import PhaserMatterCollisionPlugin from 'phaser-matter-collision-plugin';
 
 var angle;
 var person;
@@ -61,6 +63,7 @@ export default class Person extends Phaser.Scene {
   create() {
     input = this.input;
     mouse = this.input.mousePointer;
+
     this.add.image(400, 300, 'sky');
     this.matter.world.setBounds(0, 0, game.config.width, game.config.height);
     this.matter.add
@@ -75,12 +78,41 @@ export default class Person extends Phaser.Scene {
 
     person = this.add.container(150, 520, [legs, player, gun, bullet]);
     person.setSize(40, 32);
-    this.physics.world.enable(person);
 
-    person.body
-      .setVelocity(0, 0)
-      .setBounce(0, 0)
-      .setCollideWorldBounds(true);
+    // this.physics.world.enable(person);
+    this.matter.world.enabled;
+
+    const mainBody = Bodies.rectangle(0, 0, 40, 32, {
+      chamfer: { radius: 10 },
+    });
+    this.sensors = {
+      bottom: Bodies.rectangle(0, 20, 8, 2, { isSensor: true }),
+      left: Bodies.rectangle(-12, 0, 2, 20, { isSensor: true }),
+      right: Bodies.rectangle(12, 0, 2, 20, { isSensor: true }),
+    };
+
+    const compoundBody = Body.create({
+      parts: [
+        person,
+        this.sensors.bottom,
+        this.sensors.left,
+        this.sensors.right,
+      ],
+      frictionStatic: 0,
+      frictionAir: 0.02,
+      friction: 0.1,
+    });
+
+    person
+      .setExistingBody(compoundBody)
+      .setScale(2)
+      .setFixedRotation()
+      .setPosition(150, 520);
+
+    // person.body
+    //   .setVelocity(0, 0)
+    //   .setBounce(0, 0)
+    //   .setCollideWorldBounds(true);
 
     this.input.on(
       'pointermove',
@@ -245,6 +277,15 @@ var config = {
     },
   },
   scene: [Person],
+  plugins: {
+    scene: [
+      {
+        plugin: PhaserMatterCollisionPlugin,
+        key: 'matterCollision',
+        mapping: 'matterCollision',
+      },
+    ],
+  },
 };
 
 var game = new Phaser.Game(config);
