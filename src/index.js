@@ -1,11 +1,15 @@
 import Phaser from 'phaser';
-import { Engine, Render, World, Bodies, Body, Events } from 'matter-js';
+import { Engine, Render, World, Events } from 'matter-js';
 import PhaserMatterCollisionPlugin from 'phaser-matter-collision-plugin';
+import Player from "./player.js";
 
 var angle;
 var person;
-var player;
-
+var body;
+var playerSizes = {
+  h: 40,
+  w: 32
+}
 var legs;
 var gun;
 var cartridgeHolder = 8;
@@ -30,7 +34,7 @@ function LeftAngle(angle) {
   }
   return angle;
 }
-function collectStar(player, star) {
+function collectStar(body, star) {
   cartridgeHolder += 8;
   console.log(cartridgeHolder);
   star.disableBody(true, true);
@@ -66,53 +70,22 @@ export default class Person extends Phaser.Scene {
 
     this.add.image(400, 300, 'sky');
     this.matter.world.setBounds(0, 0, game.config.width, game.config.height);
-    this.matter.add
+    const ground = this.matter.add
       .image(400, 568, 'ground', null, { isStatic: true })
       .setScale(2);
 
-    player = this.add.sprite(0, 0, 'dude');
+    body = this.add.sprite(0, 0, 'dude');
     legs = this.add.sprite(0, 0, 'dudeLegs');
     gun = this.add.image(0, 1, 'gun').setOrigin(0, 0.5);
     bullet = this.matter.add.image(0, 0, 'bullet');
     // bullet.disableBody(true, true);
 
-    person = this.add.container(150, 520, [legs, player, gun, bullet]);
-    person.setSize(40, 32);
+    person = this.add.container(150, 510, [legs, body, gun, bullet]);
 
-    // this.physics.world.enable(person);
+    this.player = new Player(this,150,510,playerSizes,person);
+
     this.matter.world.enabled;
 
-    const mainBody = Bodies.rectangle(0, 0, 40, 32, {
-      chamfer: { radius: 10 },
-    });
-    this.sensors = {
-      bottom: Bodies.rectangle(0, 20, 8, 2, { isSensor: true }),
-      left: Bodies.rectangle(-12, 0, 2, 20, { isSensor: true }),
-      right: Bodies.rectangle(12, 0, 2, 20, { isSensor: true }),
-    };
-
-    const compoundBody = Body.create({
-      parts: [
-        person,
-        this.sensors.bottom,
-        this.sensors.left,
-        this.sensors.right,
-      ],
-      frictionStatic: 0,
-      frictionAir: 0.02,
-      friction: 0.1,
-    });
-
-    person
-      .setExistingBody(compoundBody)
-      .setScale(2)
-      .setFixedRotation()
-      .setPosition(150, 520);
-
-    // person.body
-    //   .setVelocity(0, 0)
-    //   .setBounce(0, 0)
-    //   .setCollideWorldBounds(true);
 
     this.input.on(
       'pointermove',
@@ -213,15 +186,27 @@ export default class Person extends Phaser.Scene {
     cursors = this.input.keyboard.createCursorKeys();
 
     //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
-    stars = this.physics.add.staticGroup();
-    stars.create(500, 500, 'star');
+    // stars = this.physics.add.staticGroup();
+    // stars.create(500, 500, 'star');
 
     //  Collide the player and the stars with the platforms
-    this.physics.add.collider(person, platforms);
-    this.physics.add.collider(stars, platforms);
+    this.matterCollision.addOnCollideStart({
+      objectA: this.player,
+      objectB: ground,
+      callback: eventData => {
+        
+        console.log("Player touched something.");
+        // bodyB will be the matter body that the player touched
+        // gameObjectB will be the game object that owns bodyB, or undefined if there's no game object
+      }
+    });
+
+    // this.physics.add.collider(person, platforms);
+    // this.physics.add.collider(stars, platforms);
 
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
-    this.physics.add.collider(person, stars, collectStar, null, this);
+    // this.physics.add.collider(person, stars, collectStar, null, this);
+    console.log(this.player);
   }
   update() {
     let angle = Phaser.Math.Angle.Between(
@@ -234,34 +219,34 @@ export default class Person extends Phaser.Scene {
     gunBack = this.add.sprite(0, 1, 'gunback').setOrigin(1, 0.5);
 
     if (cursors.left.isDown) {
-      person.body.setVelocityX(-50);
+      // this.player.scene.matter.body.setVelocityX(-50);
       person.replace(gun, gunBack);
 
-      player.anims.play('left', true);
+      body.anims.play('left', true);
       legs.anims.play('leftl', true);
       person.list[2].setRotation(LeftAngle(angle) - Math.PI);
     } else if (cursors.right.isDown) {
-      person.body.setVelocityX(50);
+      // this.player.scene.matter.body.setVelocityX(50);
       person.replace(person.list[2], gun);
 
-      player.anims.play('right', true);
+      body.anims.play('right', true);
       legs.anims.play('rightl', true);
       person.list[2].setRotation(RightAngle(angle));
     } else if (person.list[2].texture.key == 'gun') {
       person.list[2].setRotation(RightAngle(angle));
-      person.body.setVelocityX(0);
-      player.anims.play('Lturn', true);
+      // this.player.scene.matter.body.setVelocityX(0);
+      body.anims.play('Lturn', true);
       legs.anims.play('Lturnleg', true);
     } else {
       person.list[2].setRotation(LeftAngle(angle) - Math.PI);
-      person.body.setVelocityX(0);
-      player.anims.play('Rturn', true);
+      // this.player.scene.matter.body.setVelocityX(0);
+      body.anims.play('Rturn', true);
       legs.anims.play('Rturnleg', true);
     }
 
-    if (cursors.up.isDown && person.body.touching.down) {
-      person.body.setVelocityY(-330);
-    }
+    // if (cursors.up.isDown && this.player.scene.matter.body.touching.down) {
+    //   this.player.scene.matter.body.setVelocityY(-330);
+    // }
   }
 }
 
