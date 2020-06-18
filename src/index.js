@@ -69,11 +69,11 @@ export default class Person extends Phaser.Scene {
     mouse = this.input.mousePointer;
 
     this.add.image(400, 300, 'sky');
-    this.matter.world.setBounds(0, 0, game.config.width, game.config.height);
+    // this.matter.world.setBounds(0, 0, game.config.width, game.config.height);
     const ground = this.matter.add
-      .image(400, 568, 'ground', null, { isStatic: true })
+      .image(400, 568, 'ground', null, { isStatic: true})
       .setScale(2);
-
+    // ground.setCollisionByProperty({ collides: true });
     body = this.add.sprite(0, 0, 'dude');
     legs = this.add.sprite(0, 0, 'dudeLegs');
     gun = this.add.image(0, 1, 'gun').setOrigin(0, 0.5);
@@ -85,6 +85,7 @@ export default class Person extends Phaser.Scene {
     this.player = new Player(this,150,510,playerSizes,person);
 
     this.matter.world.enabled;
+    this.matter.world.setBounds(0, 0, 800, 600);
 
 
     this.input.on(

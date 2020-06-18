@@ -30,6 +30,7 @@ export default class Player {
         .setExistingBody(compoundBody)
         .setFixedRotation() // Sets inertia to infinity so the player can't rotate
         .setPosition(x, y);
+      
 
         const { LEFT, RIGHT, UP} = Phaser.Input.Keyboard.KeyCodes;
         this.leftInput = new MultiKey(scene, [LEFT]);
