@@ -16,13 +16,10 @@ export default class Player {
       };
       
       const compoundBody = Body.create({
-        type: 'body',
-        position: { x: 150, y: 510 },
         parts: [mainBody, this.sensors.bottom, this.sensors.left, this.sensors.right],
         frictionStatic: 0,
         frictionAir: 0.02,
         friction: 0.1,
-        velocity: { x: 0, y: 0 },
         
       });
       this.matterEnabledContainer = scene.matter.add.gameObject(container);
@@ -47,14 +44,14 @@ export default class Player {
         const isLeftKeyDown = this.leftInput.isDown();
         const isJumpKeyDown = this.jumpInput.isDown();
     
-        const moveForce = 0.01;
+        const moveForce = 0.004;
     
         if (isLeftKeyDown) {
-            this.matterEnabledContainer.body.setFlipX(true);
-            this.matterEnabledContainer.body.applyForce({ x: -moveForce, y: 0 });
+            // this.matterEnabledContainer.body.setFlipX(true);
+            this.matterEnabledContainer.applyForce({ x: -moveForce, y: 0 });
         } else if (isRightKeyDown) {
-            this.matterEnabledContainer.body.setFlipX(false);
-            this.matterEnabledContainer.body.applyForce({ x: moveForce, y: 0 });
+            // this.matterEnabledContainer.body.setFlipX(false);
+            this.matterEnabledContainer.applyForce({ x: moveForce, y: 0 });
         }
     
         // Limit horizontal speed, without this the player's velocity would just keep increasing to
@@ -62,11 +59,11 @@ export default class Player {
         // interfere with gravity.
         // console.log( this.matterEnabledContainer);
         // console.log(velocity);
-        if (velocity.x > 7)  this.matterEnabledContainer.body.setVelocityX(7);
-        else if (velocity.x < -7)  this.matterEnabledContainer.body.setVelocityX(-7);
+        if (velocity.x > 0.05)  this.matterEnabledContainer.setVelocityX(0.02);
+        else if (velocity.x < -0.05)  this.matterEnabledContainer.setVelocityX(-0.02);
     
         if (isJumpKeyDown) {
-            this.matterEnabledContainer.body.setVelocityY(-11);
+            this.matterEnabledContainer.setVelocityY(-11);
         }
       }
   }

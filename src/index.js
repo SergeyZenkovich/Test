@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { Engine, Render, World, Events } from 'matter-js';
+import { Engine, Render, World, Events, Bodies } from 'matter-js';
 import PhaserMatterCollisionPlugin from 'phaser-matter-collision-plugin';
 import Player from "./player.js";
 
@@ -46,6 +46,12 @@ export default class Person extends Phaser.Scene {
   }
 
   preload() {
+
+    this.load.tilemapTiledJSON("map", "../assets/level.json");
+    this.load.image(
+      "kenney-tileset-64px-extruded",
+      "../assets/kenney-tileset-64px-extruded.png"
+    );
     this.load.image('sky', 'assets/sky.png');
     this.load.image('ground', 'assets/platform.png');
     this.load.image('star', 'assets/star.png');
@@ -69,23 +75,34 @@ export default class Person extends Phaser.Scene {
     mouse = this.input.mousePointer;
 
     this.add.image(400, 300, 'sky');
-    // this.matter.world.setBounds(0, 0, game.config.width, game.config.height);
-    const ground = this.matter.add
-      .image(400, 568, 'ground', null, { isStatic: true})
-      .setScale(2);
+    
+    const map = this.make.tilemap({ key: "map" });
+    const tileset = map.addTilesetImage("kenney-tileset-64px-extruded");
+    const groundLayer = map.createDynamicLayer("Ground", tileset, 0, 0);
+    
+
+    // const ground = this.matter.add
+    //   .image(400, 568, 'ground', null, { isStatic: true})
+    //   .setScale(2);
+    // const ground  = Bodies.rectangle(400, 568, 800, 50, { isStatic: true, friction: 0 });
     // ground.setCollisionByProperty({ collides: true });
     body = this.add.sprite(0, 0, 'dude');
     legs = this.add.sprite(0, 0, 'dudeLegs');
-    gun = this.add.image(0, 1, 'gun').setOrigin(0, 0.5);
+    gun = this.add.image(0, 1, 'gun').setOrigin(0, 
+      0.5);
     bullet = this.matter.add.image(0, 0, 'bullet');
     // bullet.disableBody(true, true);
 
-    person = this.add.container(150, 510, [legs, body, gun, bullet]);
+    person = this.add.container(150, 310, [legs, body, gun, bullet]);
 
-    this.player = new Player(this,150,510,playerSizes,person);
+    this.player = new Player(this,150,310,playerSizes,person);
 
-    this.matter.world.enabled;
+
+    
+    this.matter.world.convertTilemapLayer(groundLayer);
+    // this.matter.world.enabled;
     this.matter.world.setBounds(0, 0, 800, 600);
+
 
 
     this.input.on(
@@ -105,21 +122,21 @@ export default class Person extends Phaser.Scene {
       'pointerdown',
       function() {
         if (cartridgeHolder > 0) {
-          bullet = this.physics.add.image(
-            person.list[2].parentContainer.x,
-            person.list[2].parentContainer.y,
-            'bullet'
-          );
-          bullet.enableBody(
-            true,
-            person.list[2].parentContainer.x,
-            person.list[2].parentContainer.y,
-            true,
-            true
-          );
+          // bullet = this.physics.add.image(
+          //   person.list[2].parentContainer.x,
+          //   person.list[2].parentContainer.y,
+          //   'bullet'
+          // );
+          // bullet.enableBody(
+          //   true,
+          //   person.list[2].parentContainer.x,
+          //   person.list[2].parentContainer.y,
+          //   true,
+          //   true
+          // );
 
-          this.physics.velocityFromRotation(angle, 500, bullet.body.velocity);
-          cartridgeHolder -= 1;
+          // this.physics.velocityFromRotation(angle, 500, bullet.body.velocity);
+          // cartridgeHolder -= 1;
         } else if (cartridgeHolder === 0) {
           console.log('cartridgeHolder is empty!');
         }
@@ -193,7 +210,7 @@ export default class Person extends Phaser.Scene {
     //  Collide the player and the stars with the platforms
     this.matterCollision.addOnCollideStart({
       objectA: this.player,
-      objectB: ground,
+      objectB: groundLayer,
       callback: eventData => {
         
         console.log("Player touched something.");
@@ -207,7 +224,9 @@ export default class Person extends Phaser.Scene {
 
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
     // this.physics.add.collider(person, stars, collectStar, null, this);
+    console.log(groundLayer);
     console.log(this.player);
+
   }
   update() {
     let angle = Phaser.Math.Angle.Between(
@@ -275,3 +294,4 @@ var config = {
 };
 
 var game = new Phaser.Game(config);
+
