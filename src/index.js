@@ -1,15 +1,15 @@
 import Phaser from 'phaser';
 import { Engine, Render, World, Events, Bodies } from 'matter-js';
 import PhaserMatterCollisionPlugin from 'phaser-matter-collision-plugin';
-import Player from "./player.js";
+import Player from './player.js';
 
 var angle;
 var person;
 var body;
 var playerSizes = {
   h: 40,
-  w: 32
-}
+  w: 32,
+};
 var legs;
 var gun;
 var cartridgeHolder = 8;
@@ -46,11 +46,10 @@ export default class Person extends Phaser.Scene {
   }
 
   preload() {
-
-    this.load.tilemapTiledJSON("map", "../assets/level.json");
+    this.load.tilemapTiledJSON('map', 'assets/level.json');
     this.load.image(
-      "kenney-tileset-64px-extruded",
-      "../assets/kenney-tileset-64px-extruded.png"
+      'kenney-tileset-64px-extruded',
+      'assets/kenney-tileset-64px-extruded.png'
     );
     this.load.image('sky', 'assets/sky.png');
     this.load.image('ground', 'assets/platform.png');
@@ -75,36 +74,24 @@ export default class Person extends Phaser.Scene {
     mouse = this.input.mousePointer;
 
     this.add.image(400, 300, 'sky');
-    
-    const map = this.make.tilemap({ key: "map" });
-    const tileset = map.addTilesetImage("kenney-tileset-64px-extruded");
-    const groundLayer = map.createDynamicLayer("Ground", tileset, 0, 0);
-    
 
-    // const ground = this.matter.add
-    //   .image(400, 568, 'ground', null, { isStatic: true})
-    //   .setScale(2);
-    // const ground  = Bodies.rectangle(400, 568, 800, 50, { isStatic: true, friction: 0 });
-    // ground.setCollisionByProperty({ collides: true });
+    const map = this.make.tilemap({ key: 'map' });
+    const tileset = map.addTilesetImage('kenney-tileset-64px-extruded');
+    const groundLayer = map.createDynamicLayer('Ground', tileset, 0, 0);
+
+    groundLayer.setCollisionByProperty({ collides: true });
     body = this.add.sprite(0, 0, 'dude');
     legs = this.add.sprite(0, 0, 'dudeLegs');
-    gun = this.add.image(0, 1, 'gun').setOrigin(0, 
-      0.5);
+    gun = this.add.image(0, 1, 'gun').setOrigin(0, 0.5);
     bullet = this.matter.add.image(0, 0, 'bullet');
-    // bullet.disableBody(true, true);
 
     person = this.add.container(150, 310, [legs, body, gun, bullet]);
 
-    this.player = new Player(this,150,310,playerSizes,person);
+    this.player = new Player(this, 150, 310, playerSizes, person);
 
-
-    
     this.matter.world.convertTilemapLayer(groundLayer);
-    // this.matter.world.enabled;
+    console.log(this);
     this.matter.world.setBounds(0, 0, 800, 600);
-
-
-
     this.input.on(
       'pointermove',
       function(pointer) {
@@ -122,11 +109,15 @@ export default class Person extends Phaser.Scene {
       'pointerdown',
       function() {
         if (cartridgeHolder > 0) {
-          // bullet = this.physics.add.image(
-          //   person.list[2].parentContainer.x,
-          //   person.list[2].parentContainer.y,
-          //   'bullet'
-          // );
+          console.log('Puf!');
+          console.log(angle);
+          bullet = this.matter.add.image(
+            person.list[2].parentContainer.x,
+            person.list[2].parentContainer.y,
+            'bullet'
+          );
+          let force = new Phaser.Math.Vector2(0, 0);
+          bullet.applyForce(force.setAngle(angle));
           // bullet.enableBody(
           //   true,
           //   person.list[2].parentContainer.x,
@@ -136,7 +127,7 @@ export default class Person extends Phaser.Scene {
           // );
 
           // this.physics.velocityFromRotation(angle, 500, bullet.body.velocity);
-          // cartridgeHolder -= 1;
+          cartridgeHolder -= 1;
         } else if (cartridgeHolder === 0) {
           console.log('cartridgeHolder is empty!');
         }
@@ -177,7 +168,7 @@ export default class Person extends Phaser.Scene {
     });
     this.anims.create({
       key: 'Rturnleg',
-      frames: [{ key: 'dude', frame: 5 }],
+      frames: [{ key: 'dudeLegs', frame: 3 }],
       frameRate: 20,
     });
 
@@ -200,33 +191,7 @@ export default class Person extends Phaser.Scene {
       repeat: -1,
     });
 
-    //  Input Events
     cursors = this.input.keyboard.createCursorKeys();
-
-    //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
-    // stars = this.physics.add.staticGroup();
-    // stars.create(500, 500, 'star');
-
-    //  Collide the player and the stars with the platforms
-    this.matterCollision.addOnCollideStart({
-      objectA: this.player,
-      objectB: groundLayer,
-      callback: eventData => {
-        
-        console.log("Player touched something.");
-        // bodyB will be the matter body that the player touched
-        // gameObjectB will be the game object that owns bodyB, or undefined if there's no game object
-      }
-    });
-
-    // this.physics.add.collider(person, platforms);
-    // this.physics.add.collider(stars, platforms);
-
-    //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
-    // this.physics.add.collider(person, stars, collectStar, null, this);
-    console.log(groundLayer);
-    console.log(this.player);
-
   }
   update() {
     let angle = Phaser.Math.Angle.Between(
@@ -239,14 +204,12 @@ export default class Person extends Phaser.Scene {
     gunBack = this.add.sprite(0, 1, 'gunback').setOrigin(1, 0.5);
 
     if (cursors.left.isDown) {
-      // this.player.scene.matter.body.setVelocityX(-50);
       person.replace(gun, gunBack);
 
       body.anims.play('left', true);
       legs.anims.play('leftl', true);
       person.list[2].setRotation(LeftAngle(angle) - Math.PI);
     } else if (cursors.right.isDown) {
-      // this.player.scene.matter.body.setVelocityX(50);
       person.replace(person.list[2], gun);
 
       body.anims.play('right', true);
@@ -254,19 +217,13 @@ export default class Person extends Phaser.Scene {
       person.list[2].setRotation(RightAngle(angle));
     } else if (person.list[2].texture.key == 'gun') {
       person.list[2].setRotation(RightAngle(angle));
-      // this.player.scene.matter.body.setVelocityX(0);
       body.anims.play('Lturn', true);
       legs.anims.play('Lturnleg', true);
     } else {
       person.list[2].setRotation(LeftAngle(angle) - Math.PI);
-      // this.player.scene.matter.body.setVelocityX(0);
       body.anims.play('Rturn', true);
       legs.anims.play('Rturnleg', true);
     }
-
-    // if (cursors.up.isDown && this.player.scene.matter.body.touching.down) {
-    //   this.player.scene.matter.body.setVelocityY(-330);
-    // }
   }
 }
 
@@ -294,4 +251,3 @@ var config = {
 };
 
 var game = new Phaser.Game(config);
-
