@@ -1,0 +1,48 @@
+{
+	"generator_info": "Shape definitions generated with PhysicsEditor. Visit https://www.codeandweb.com/physicseditor",
+	"f_2": {
+		"type": "fromPhysicsEditor",
+		"label": "f_2-stairs",
+		"isStatic": true,
+		"density": 0.1,
+		"restitution": 0,
+		"friction": 0.5,
+		"frictionAir": 0.01,
+		"frictionStatic": 0.5,
+		"collisionFilter": {
+			"group": 1,
+			"category": 1,
+			"mask": 255
+		},
+		"fixtures": [
+			{
+				"label": "",
+				"isSensor": false,
+				"vertices": [
+					[ { "x":127, "y":294 }, { "x":127, "y":425 }, { "x":145, "y":425 }, { "x":145, "y":294 } ]
+				]
+			},
+			{
+				"label": "",
+				"isSensor": false,
+				"vertices": [
+					[ { "x":303, "y":206 }, { "x":303, "y":265 }, { "x":324, "y":265 }, { "x":324, "y":206 } ]
+				]
+			},
+			{
+				"label": "",
+				"isSensor": false,
+				"vertices": [
+					[ { "x":289, "y":265 }, { "x":272, "y":265 }, { "x":272, "y":343 }, { "x":288, "y":343 } ]
+				]
+			},
+			{
+				"label": "",
+				"isSensor": false,
+				"vertices": [
+					[ { "x":483, "y":293 }, { "x":483, "y":343 }, { "x":500, "y":343 }, { "x":500, "y":293 } ]
+				]
+			}
+		]
+	}
+}

@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-import { Engine, Render, World, Events, Bodies } from 'matter-js';
 import PhaserMatterCollisionPlugin from 'phaser-matter-collision-plugin';
 import Player from './player.js';
 
@@ -15,10 +14,7 @@ var gun;
 var cartridgeHolder = 8;
 var input;
 var bullet;
-var mouse;
 var gunBack;
-var stars;
-var platforms;
 var cursors;
 
 function RightAngle(angle) {
@@ -34,11 +30,6 @@ function LeftAngle(angle) {
   }
   return angle;
 }
-function collectStar(body, star) {
-  cartridgeHolder += 8;
-  console.log(cartridgeHolder);
-  star.disableBody(true, true);
-}
 
 export default class Person extends Phaser.Scene {
   constructor() {
@@ -51,10 +42,7 @@ export default class Person extends Phaser.Scene {
       'kenney-tileset-64px-extruded',
       'assets/kenney-tileset-64px-extruded.png'
     );
-    this.load.image('sky', 'assets/sky.png');
     this.load.image('ground', 'assets/platform.png');
-    this.load.image('star', 'assets/star.png');
-    this.load.image('lstar', 'assets/lstar.png');
     this.load.image('bomb', 'assets/bomb.png');
     this.load.image('gun', 'assets/handwithgun.png');
     this.load.image('bullet', 'assets/bullet.png');
@@ -73,13 +61,12 @@ export default class Person extends Phaser.Scene {
     input = this.input;
     mouse = this.input.mousePointer;
 
-    this.add.image(400, 300, 'sky');
-
     const map = this.make.tilemap({ key: 'map' });
     const tileset = map.addTilesetImage('kenney-tileset-64px-extruded');
     const groundLayer = map.createDynamicLayer('Ground', tileset, 0, 0);
 
     groundLayer.setCollisionByProperty({ collides: true });
+
     body = this.add.sprite(0, 0, 'dude');
     legs = this.add.sprite(0, 0, 'dudeLegs');
     gun = this.add.image(0, 1, 'gun').setOrigin(0, 0.5);
@@ -92,6 +79,7 @@ export default class Person extends Phaser.Scene {
     this.matter.world.convertTilemapLayer(groundLayer);
     console.log(this);
     this.matter.world.setBounds(0, 0, 800, 600);
+    console.log(this);
     this.input.on(
       'pointermove',
       function(pointer) {
@@ -109,24 +97,14 @@ export default class Person extends Phaser.Scene {
       'pointerdown',
       function() {
         if (cartridgeHolder > 0) {
-          console.log('Puf!');
-          console.log(angle);
           bullet = this.matter.add.image(
             person.list[2].parentContainer.x,
             person.list[2].parentContainer.y,
             'bullet'
           );
-          let force = new Phaser.Math.Vector2(0, 0);
-          bullet.applyForce(force.setAngle(angle));
-          // bullet.enableBody(
-          //   true,
-          //   person.list[2].parentContainer.x,
-          //   person.list[2].parentContainer.y,
-          //   true,
-          //   true
-          // );
+          let force = new Phaser.Math.Vector2();
 
-          // this.physics.velocityFromRotation(angle, 500, bullet.body.velocity);
+          bullet.applyForce({ x: 0.001, y: 0.002 });
           cartridgeHolder -= 1;
         } else if (cartridgeHolder === 0) {
           console.log('cartridgeHolder is empty!');

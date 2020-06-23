@@ -2,7 +2,7 @@ import MultiKey from './multikey.js';
 
 export default class Player {
   constructor(scene, x, y, playerSizes, container) {
-    this.scene = scene;
+    // this.scene = scene;
 
     const { Body, Bodies } = Phaser.Physics.Matter.Matter;
 
