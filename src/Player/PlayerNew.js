@@ -8,10 +8,10 @@ export default class Player {
     const { Body, Bodies } = Phaser.Physics.Matter.Matter;
 
     this.mainBody = Bodies.rectangle(
-      playerSizes.w * 0.05,
+      playerSizes.w * 0.1,
       playerSizes.h * 0.1,
-      playerSizes.w * 0.55,
-      playerSizes.h *0.65,
+      playerSizes.w * 0.35,
+      playerSizes.h *0.55,
       {
         chamfer: { radius: 10 },
       }

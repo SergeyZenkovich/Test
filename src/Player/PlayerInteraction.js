@@ -1,18 +1,10 @@
-import Player from './PlayerNew';
+
 import PersonAnimation from './PlayerAnimation';
-// import person from './PlayerAnimation';
 import level0json from '../../assets/level0Physics/level-start.xml.json';
 import level0MiddleJson from '../../assets/level0Physics/level-middle.xml.json';
 import level0EndJson from '../../assets/level0Physics/level-end.xml.json';
 import level0stairsJson from '../../assets/level0Physics/level-start-stairs.xml.json';
 import level0stairsMiddleJson from '../../assets/level0Physics/level-middle-stairs.xml.json';
-import hunterPath from '../../assets/level0/hunter_1_0.png';
-// console.log(person);
-
-// const playerSizes = {
-//   h: 40,
-//   w: 32,
-// };
 export default class PlayerInteraction {
   constructor(scene) {
     this.playerInstance = {};
@@ -43,14 +35,12 @@ export default class PlayerInteraction {
     collisionInfo.depth < this.LAST_STEP_LENGTH;
 
   preload() {
-    // this.scene.load.image('hero', hunterPath);
     this.playerAnimation = new PersonAnimation(this.scene);
     this.playerAnimation.preload();
   }
 
   create() {
     let player = this.playerAnimation.create();
-    // this.playerInstance = new Player(this.scene, 107, 168, 'hero');
     this.playerInstance = player;
     console.log(this);
     
