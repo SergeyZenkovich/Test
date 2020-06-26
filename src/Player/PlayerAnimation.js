@@ -66,7 +66,6 @@ export default class PersonAnimation {
     person = this.scene.add.container(107, 168, [legs, body, gun, bullet]);
 
     this.playerInstance = new Player(this.scene, 107, 168, playerSizes, person);
-    console.log(person);
 
     this.scene.input.on(
       'pointermove',
@@ -77,14 +76,13 @@ export default class PersonAnimation {
           pointer.x + this.scene.cameras.main.scrollX,
           pointer.y + this.scene.cameras.main.scrollY
         );
-        if ( person.list[2].parentContainer.x > pointer.x){
+        if ( person.list[2].parentContainer.x > pointer.worldX){
           gunBack = this.scene.add.image(0, 1, 'gunback').setOrigin(1, 0.5);
           person.replace(gun, gunBack);
           body.anims.play('Lturn', true);
           legs.anims.play('Lturnleg', true);
         }
-        else if( person.list[2].parentContainer.x < pointer.x){
-          console.log([person.list[2].parentContainer.x,  pointer.x + this.scene.cameras.main.scrollX])
+        else if( person.list[2].parentContainer.x < pointer.worldX){
           person.replace(person.list[2], gun);
           body.anims.play('Rturn', true);
           legs.anims.play('Rturnleg', true);
@@ -95,25 +93,33 @@ export default class PersonAnimation {
 
     //Shooting
 
-    // this.input.on(
-    //   'pointerdown',
-    //   function() {
-    //     if (cartridgeHolder > 0) {
-    //       bullet = this.matter.add.image(
-    //         person.list[2].parentContainer.x,
-    //         person.list[2].parentContainer.y,
-    //         'bullet'
-    //       );
-    //       let force = new Phaser.Math.Vector2();
-
-    //       bullet.applyForce({ x: 0.001, y: 0.002 });
-    //       cartridgeHolder -= 1;
-    //     } else if (cartridgeHolder === 0) {
-    //       console.log('cartridgeHolder is empty!');
-    //     }
-    //   },
-    //   this
-    // );
+    this.scene.input.on(
+      'pointerdown',
+      function(pointer) {
+        if (cartridgeHolder > 0) {
+          bullet = this.scene.matter.add.image(
+            person.list[2].parentContainer.x,
+            person.list[2].parentContainer.y,
+            'bullet'
+          );
+          let force = new Phaser.Math.Vector2();
+          let line = new Phaser.Geom.Line( );
+          var graphics = this.scene.add.graphics();
+          graphics.lineStyle(1, 0xFF00FF, 0.5);
+          graphics.beginPath();
+          graphics.moveTo(person.list[2].parentContainer.x,
+            person.list[2].parentContainer.y);
+          graphics.lineTo(pointer.worldX,pointer.worldY);
+          graphics.closePath();
+          graphics.strokePath();
+          bullet.applyForce({ x: 0.0004, y: 0.0003 });
+          cartridgeHolder -= 1;
+        } else if (cartridgeHolder === 0) {
+          console.log('cartridgeHolder is empty!');
+        }
+      },
+      this
+    );
 
     this.scene.anims.create({
       key: 'left',

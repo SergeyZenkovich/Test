@@ -1,1 +1,4 @@
 trash
+node_modules
+.idea
+dist
