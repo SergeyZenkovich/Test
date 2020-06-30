@@ -96,24 +96,30 @@ export default class PersonAnimation {
     this.scene.input.on(
       'pointerdown',
       function(pointer) {
+        console.log(pointer);
         if (cartridgeHolder > 0) {
           bullet = this.scene.matter.add.image(
             person.list[2].parentContainer.x,
             person.list[2].parentContainer.y,
             'bullet'
           );
-          let force = new Phaser.Math.Vector2();
-          let line = new Phaser.Geom.Line( );
-          var graphics = this.scene.add.graphics();
-          graphics.lineStyle(1, 0xFF00FF, 0.5);
-          graphics.beginPath();
-          graphics.moveTo(person.list[2].parentContainer.x,
-            person.list[2].parentContainer.y);
-          graphics.lineTo(pointer.worldX,pointer.worldY);
-          graphics.closePath();
-          graphics.strokePath();
+          const distance  = Phaser.Math.Distance.Between(person.list[2].parentContainer.x,
+            person.list[2].parentContainer.y, pointer.worldX, pointer.worldY)
+         
+          // var graphics = this.scene.add.graphics();
+          // graphics.lineStyle(1, 0xFF00FF, 0.5);
+          // graphics.beginPath(); 
+          // graphics.moveTo(person.list[2].parentContainer.x,
+          //   person.list[2].parentContainer.y);
+          // graphics.lineTo(pointer.worldX,pointer.worldY);
+          // graphics.closePath();
+          // graphics.strokePath();
+            console.log(this.playerInstance);
+          var shoot = this.scene.matter.add.rectangle( (this.playerInstance.mainBody.position.x+pointer.worldX)/2,
+          (this.playerInstance.mainBody.position.y+pointer.worldY)/2, distance, 0.01,{angle: angle} );
           bullet.applyForce({ x: 0.0004, y: 0.0003 });
           cartridgeHolder -= 1;
+          setTimeout(()=>{this.scene.matter.world.remove(shoot); shoot.visible = false;},100)
         } else if (cartridgeHolder === 0) {
           console.log('cartridgeHolder is empty!');
         }
