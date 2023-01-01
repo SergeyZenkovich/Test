@@ -10,12 +10,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11"
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
   },
   "dependencies": {
     "matter-js": "^0.14.2",
-    "phaser": "^3.23.0",
+    "phaser": "^3.55.2",
     "phaser-matter-collision-plugin": "^0.10.2"
   }
 }
